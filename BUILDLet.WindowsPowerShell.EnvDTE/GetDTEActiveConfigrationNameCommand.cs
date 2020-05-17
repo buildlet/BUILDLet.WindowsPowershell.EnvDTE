@@ -18,16 +18,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FO
 DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************************************/
-
-using EnvDTE;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Management.Automation;   // for PowerShell 5
-using System.Runtime.InteropServices; // for Marshal
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Management.Automation;   // for PowerShell
+using System.Runtime.InteropServices; // for Mashall Class
+using EnvDTE;
 
 namespace BUILDLet.WindowsPowerShell.EnvDTE.Commands
 {
@@ -36,24 +35,52 @@ namespace BUILDLet.WindowsPowerShell.EnvDTE.Commands
     [OutputType(typeof(string))]
     public class GetDTEActiveConfigrationNameCommand : PSCmdlet
     {
-        [Parameter(HelpMessage = "Specifies the path of the location of the solution file (*.sln) of Visual Studio.", Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        // ----------------------------------------------------------------------------------------------------
+        // Parameter(s)
+        // ----------------------------------------------------------------------------------------------------
+
+        // .PARAMETER Path
+        [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true, HelpMessage = "Specifies the path of the location of Visual Studio Solution file (*.sln).")]
         [Alias("PSPath")]
         public string Path { get; set; }
 
+
+        // ----------------------------------------------------------------------------------------------------
+        // Pre-Processing Operations
+        // ----------------------------------------------------------------------------------------------------
+        // protected override void BeginProcessing() { }
+
+
+        // ----------------------------------------------------------------------------------------------------
+        // Input-Process Operations
+        // ----------------------------------------------------------------------------------------------------
         protected override void ProcessRecord()
         {
-            try
+            // Convert Path
+            if (!System.IO.Path.IsPathRooted(this.Path))
             {
-                if (!System.IO.Path.IsPathRooted(this.Path))
-                {
-                    this.Path = System.IO.Path.Combine(this.SessionState.Path.CurrentFileSystemLocation.Path, this.GetResolvedProviderPathFromPSPath(this.Path, out _)[0]);
-                }
-
-                this.WriteObject(GetDTEActiveConfigrationNameCommand.GetDTEActiveConfigurationNameBySolutionFile(this.Path));
+                this.Path = System.IO.Path.Combine(this.SessionState.Path.CurrentFileSystemLocation.Path, this.GetResolvedProviderPathFromPSPath(this.Path, out _)[0]);
             }
-            catch (Exception) { throw; }
+
+            // Validation (File Exsistence)
+            if (!File.Exists(this.Path)) { throw new FileNotFoundException(); }
+
+            // OUTPUT
+            this.WriteObject(GetDTEActiveConfigrationNameCommand.GetDTEActiveConfigurationNameBySolutionFile(this.Path));
         }
 
+
+        // ----------------------------------------------------------------------------------------------------
+        // Post-Processing Operations
+        // ----------------------------------------------------------------------------------------------------
+        // protected override void EndProcessing() { }
+
+
+        // ----------------------------------------------------------------------------------------------------
+        // Static Method(s)
+        // ----------------------------------------------------------------------------------------------------
+
+        // Active Configuration Name
         protected static string GetDTEActiveConfigurationNameBySolutionFile(string path) => ((dynamic)Marshal.BindToMoniker(path)).SolutionBuild.ActiveConfiguration.Name;
     }
 }
