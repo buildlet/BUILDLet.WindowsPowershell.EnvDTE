@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BUILDLet.WindowsPowerShell.EnvDTE", "BUILDLet.WindowsPowerShell.EnvDTE\BUILDLet.WindowsPowerShell.EnvDTE.csproj", "{B8B9F2DB-A0DB-415B-A039-3F7E33507A23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BUILDLet.WindowsPowerShell.EnvDTE.Commands", "BUILDLet.WindowsPowerShell.EnvDTE\BUILDLet.WindowsPowerShell.EnvDTE.Commands.csproj", "{B8B9F2DB-A0DB-415B-A039-3F7E33507A23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BUILDLet.WindowsPowerShell.EnvDTE.CommandsTests", "BUILDLet.WindowsPowerShell.EnvDTE.CommandsTests\BUILDLet.WindowsPowerShell.EnvDTE.CommandsTests.csproj", "{8A144A4E-5D74-4756-BC4E-7AE5025BE820}"
 EndProject

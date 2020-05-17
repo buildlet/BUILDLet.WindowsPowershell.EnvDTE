@@ -28,37 +28,35 @@
 # You can download Pester from https://go.microsoft.com/fwlink/?LinkID=534084
 #
 
+# SET Active Configuration Name
+$ActiveConfirutationName = 'Release'
 
-# Active Configuration Name
-$CURRENT_CONFIG = 'Release'
-
-
-# Module Information
+# GET Module Path
 $module_name = 'BUILDLet.WindowsPowerShell.EnvDTE'
 $module_filename = "$module_name.dll"
-$module_path = $PSScriptRoot | Join-Path -ChildPath 'bin' | Join-Path -ChildPath $CURRENT_CONFIG | Join-Path -ChildPath $module_filename
+$module_path = $PSScriptRoot | Join-Path -ChildPath 'bin' | Join-Path -ChildPath $ActiveConfirutationName | Join-Path -ChildPath $module_filename
 
 # Import Module
 $module_path | Import-Module
 
-
 Describe "Get-DTEActiveConfigurationName" {
-	Context "Output" {
+	Context "Active ConfigurationName" {
 
-		It "Should be ActiveConfigurationName (Absolute Path)" {
+        # Absolute Path Test
+		It "Should be got from Absolute Path" {
             
             # ACT & ASSERT
-            Get-DTEActiveConfigurationName -Path ($PSScriptRoot | Join-Path -ChildPath '..\BUILDLet.WindowsPowerShell.EnvDTE.sln') | Should Be "$CURRENT_CONFIG"
+            Get-DTEActiveConfigurationName -Path ($PSScriptRoot | Join-Path -ChildPath '..\BUILDLet.WindowsPowerShell.EnvDTE.sln') | Should Be "$ActiveConfirutationName"
 		}
 
-
-		It "Should be ActiveConfigurationName (Relative Path)" {
+        # Relative Path Test
+		It "Should be got from Relative Path" {
             
             # ARRANGE
             $PSScriptRoot | Set-Location
 
             # ACT & ASSERT
-            Get-DTEActiveConfigurationName -Path '..\BUILDLet.WindowsPowerShell.EnvDTE.sln' | Should Be "$CURRENT_CONFIG"
+            Get-DTEActiveConfigurationName -Path '..\BUILDLet.WindowsPowerShell.EnvDTE.sln' | Should Be "$ActiveConfirutationName"
 		}
 	}
 }

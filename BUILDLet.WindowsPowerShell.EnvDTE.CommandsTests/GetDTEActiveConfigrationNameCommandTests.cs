@@ -18,7 +18,6 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FO
 DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************************************/
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BUILDLet.WindowsPowerShell.EnvDTE.Commands;
 using System;
@@ -27,32 +26,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
+using System.Diagnostics;
 
 namespace BUILDLet.WindowsPowerShell.EnvDTE.Commands.Tests
 {
     [TestClass]
     public class GetDTEActiveConfigrationNameCommandTests
     {
-        public class GetDTEActiveConfigurationNameBySolutionFileMethodTester : GetDTEActiveConfigrationNameCommand
+        // Test Driver of ActiveConfigrationName property of GetDTEActiveConfigrationNameCommand class
+        public class ActiveConfigrationNameTestDriver : GetDTEActiveConfigrationNameCommand
         {
-            public static string InvokeMethod(string path) => GetDTEActiveConfigrationNameCommand.GetDTEActiveConfigurationNameBySolutionFile(path);
+            // GET ActiveConfigurationName
+            public string GetActiveConfigurationNameBySolutionFile(string path) =>
+                GetDTEActiveConfigrationNameCommand.GetDTEActiveConfigurationNameBySolutionFile(path);
         }
 
 
         [TestMethod]
-        public void GetDTEActiveConfigurationNameBySolutionFileTest()
+        public void ActiveConfigurationNameTest()
         {
             // ARRANGE
+
+            // SET File Path
             var path = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\BUILDLet.WindowsPowerShell.EnvDTE.sln");
 
-            string expected;
+            // SET Expected
+            var expected =
 #if DEBUG
-            expected = "Debug";
+                "Debug";
 #else
-            expected = "Release";
+                "Release";
 #endif
+
             // ACT
-            var actual = GetDTEActiveConfigurationNameBySolutionFileMethodTester.InvokeMethod(path);
+            var actual = new ActiveConfigrationNameTestDriver().GetActiveConfigurationNameBySolutionFile(path);
+
+            // Print Actual
+            Console.WriteLine($"Solution File Path = \"{path}\"");
+            Console.WriteLine($"Expected\t= \"{expected}\"");
+            Console.WriteLine($"Actual\t= \"{actual}\"");
 
             // ASSERT
             Assert.AreEqual(expected, actual);

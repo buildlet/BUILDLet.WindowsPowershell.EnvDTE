@@ -66,9 +66,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BUILDLet.WindowsPowerShell.EnvDTE\BUILDLet.WindowsPowerShell.EnvDTE.csproj">
+    <ProjectReference Include="..\BUILDLet.WindowsPowerShell.EnvDTE\BUILDLet.WindowsPowerShell.EnvDTE.Commands.csproj">
       <Project>{b8b9f2db-a0db-415b-a039-3f7e33507a23}</Project>
-      <Name>BUILDLet.WindowsPowerShell.EnvDTE</Name>
+      <Name>BUILDLet.WindowsPowerShell.EnvDTE.Commands</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
