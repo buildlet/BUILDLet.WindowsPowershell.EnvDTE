@@ -29,7 +29,7 @@
 #
 
 # SET Active Configuration Name
-$ActiveConfirutationName = 'Release'
+$ActiveConfirutationName = 'Debug'
 
 # GET Module Path
 $module_name = 'BUILDLet.WindowsPowerShell.EnvDTE'
@@ -40,23 +40,41 @@ $module_path = $PSScriptRoot | Join-Path -ChildPath 'bin' | Join-Path -ChildPath
 $module_path | Import-Module
 
 Describe "Get-DTEActiveConfigurationName" {
-	Context "Active ConfigurationName" {
 
-        # Absolute Path Test
-		It "Should be got from Absolute Path" {
-            
-            # ACT & ASSERT
-            Get-DTEActiveConfigurationName -Path ($PSScriptRoot | Join-Path -ChildPath '..\BUILDLet.WindowsPowerShell.EnvDTE.sln') | Should Be "$ActiveConfirutationName"
-		}
+	Context 'when Solution File Path is specified to $Path parameter' {
 
-        # Relative Path Test
-		It "Should be got from Relative Path" {
+        $TestCases = @(
+
+            # Absolute Path
+            @{
+                Expected = $ActiveConfirutationName
+                InputPath = $PSScriptRoot | Join-Path -ChildPath '..\BUILDLet.WindowsPowerShell.EnvDTE.sln'
+            }
+
+            # Relative Path
+            @{
+                Expected = $ActiveConfirutationName
+                InputPath = '..\BUILDLet.WindowsPowerShell.EnvDTE.sln'
+            }
+        )
+
+		It "returns Active ConfigurationName" -TestCases $TestCases {
             
+            # PARAMETER(S)
+            Param($Expected, $InputPath)
+
             # ARRANGE
             $PSScriptRoot | Set-Location
 
-            # ACT & ASSERT
-            Get-DTEActiveConfigurationName -Path '..\BUILDLet.WindowsPowerShell.EnvDTE.sln' | Should Be "$ActiveConfirutationName"
+            # ACT
+            $actual = Get-DTEActiveConfigurationName -Path $InputPath
+
+            # OUTPUT
+            Write-Host "`t`t" + "Expected: `"$Expected`""
+            Write-Host "`t`t" + "Actual  : `"$actual`""
+
+            # ASSERT
+            $actual | Should Be $Expected
 		}
 	}
 }
